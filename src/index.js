@@ -37,6 +37,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 //  reducers
 const plantReducer = (state = [], action) => {
+  console.log('Reducer - ', action.payload);
   switch (action.type) {
     case 'SET_PLANTS':
       return action.payload;

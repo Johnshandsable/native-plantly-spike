@@ -38,12 +38,10 @@ function PlantList() {
   //     });
   // };
 
-  // console.log(plantList);
-
   return (
     <ul>
       {plantList.map((plant, index) => {
-        <PlantItem key={index} plant={plant} />;
+        return <PlantItem key={index} plant={plant} />;
       })}
     </ul>
   );

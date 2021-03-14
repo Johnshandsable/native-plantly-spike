@@ -39,3 +39,8 @@
   border-radius: 5px;
   max-width: 400px;
 }
+
+ul {
+  font-family: 'Roboto', sans-serif;
+  list-style-type: none;
+}

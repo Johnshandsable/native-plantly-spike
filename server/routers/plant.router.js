@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
-
 const axios = require('axios');
 
+const bundleData = require('../modules/bundledata');
+
+// const clientData = [];
+
 router.get('/', (req, res) => {
-  const searchToken = 'narrowleaf';
-  const searchState = 'MO';
+  const searchToken = 'narrowleaf'; // Will be coming from client-side
+  const searchState = 'MO'; // Will be coming from req.user.location
 
   axios
     .post(
@@ -53,67 +56,26 @@ router.get('/', (req, res) => {
       // above info sent to NatureServe API
     )
     .then((dbRes) => {
-      /*
-      NatureServe Data Expected Response 
+      // for (const resultItem of dbRes.data.results) {
+      //   clientData.push({
+      //     scientificName: resultItem.scientificName,
+      //     primaryCommonName: resultItem.primaryCommonName,
+      //     kingdom: resultItem.speciesGlobal.kingdom,
+      //     phylum: resultItem.speciesGlobal.phylum,
+      //     class: resultItem.speciesGlobal.taxclass,
+      //     order: resultItem.speciesGlobal.taxorder,
+      //     family: resultItem.speciesGlobal.family,
+      //     genus: resultItem.speciesGlobal.genus,
+      //   });
+      // }
+      async function clientData() {
+        return await bundleData(dbRes.data.results);
+      }
 
-      dbRes.data.results = [] -> 
-        scientificName: String
-        primaryCommonName: String
-        roundedGRank: String
-
-        .speciesGlobal -> 
-          kingdom: String
-          phylum: String
-          taxclass: String
-          taxorder: String
-          family: String
-          genus: String
-      */
-      const scientificNames = ['Elodium paludosum'];
-
-      /*
-      Want an array of 20 items with 
-        scientificName
-        primaryCommonName 
-        image_url
-        phylum
-        kingdom
-        class
-        order 
-        family 
-        genus 
-      */
-      res.send(dbRes.data.results);
+      res.send(clientData());
     })
     .catch((err) => {
       console.error('POST to NatureServe - error occurred', err);
-      res.sendStatus(500);
-    });
-});
-
-router.get('/trefle', (req, res) => {
-  const scientificName = 'Elodium';
-  /*
-    Want an array of 20 items with image_url
-
-    dbRes.data = [] -> 
-      image_url
-  */
-  console.log(process.env.TREFLE_API_KEY);
-  axios
-    .get('https://trefle.io/api/v1/species/search', {
-      params: {
-        q: `${scientificName}`,
-        token: process.env.TREFLE_API_KEY,
-      },
-    })
-    .then((dbRes) => {
-      console.log(dbRes.data);
-      // console.log(dbRes.data.image_url);
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error('an error occurred', err);
       res.sendStatus(500);
     });
 });
