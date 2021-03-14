@@ -56,23 +56,10 @@ router.get('/', (req, res) => {
       // above info sent to NatureServe API
     )
     .then((dbRes) => {
-      // for (const resultItem of dbRes.data.results) {
-      //   clientData.push({
-      //     scientificName: resultItem.scientificName,
-      //     primaryCommonName: resultItem.primaryCommonName,
-      //     kingdom: resultItem.speciesGlobal.kingdom,
-      //     phylum: resultItem.speciesGlobal.phylum,
-      //     class: resultItem.speciesGlobal.taxclass,
-      //     order: resultItem.speciesGlobal.taxorder,
-      //     family: resultItem.speciesGlobal.family,
-      //     genus: resultItem.speciesGlobal.genus,
-      //   });
-      // }
       async function clientData() {
         return await bundleData(dbRes.data.results);
       }
-
-      res.send(clientData());
+      res.send(dbRes.data.results);
     })
     .catch((err) => {
       console.error('POST to NatureServe - error occurred', err);

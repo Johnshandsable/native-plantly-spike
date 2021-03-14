@@ -7,8 +7,11 @@ import Typography from '@material-ui/core/Typography';
 function AboutPage() {
   const useStyles = makeStyles((theme) => ({
     root: {
+      backgroundImage: `url("https://bs.plantnet.org/image/o/1a03948baf0300da25558c2448f086d39b41ca30")`,
+      backgroundRepeat: `no-repeat`,
+      height: `100%`,
       flexGrow: 1,
-      marginTop: 20,
+      marginTop: 70,
     },
     paper: {
       padding: theme.spacing(2),
@@ -21,8 +24,8 @@ function AboutPage() {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
+        <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
+          <Paper className={classes.paper}>xs</Paper>
         </Grid>
         {/* <Grid item xs={6}>
           <Paper className={classes.paper}>
@@ -47,13 +50,13 @@ function AboutPage() {
             <Typography className="picture-title">
               Plant Name goes here...
             </Typography>
-            <img
+            {/* <img
               className="picture"
               src={
                 'https://bs.plantnet.org/image/o/1a03948baf0300da25558c2448f086d39b41ca30'
               }
               alt="sumac tree"
-            />
+            /> */}
           </Paper>
         </Grid>
         {/* Description */}

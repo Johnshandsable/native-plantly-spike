@@ -44,3 +44,8 @@ ul {
   font-family: 'Roboto', sans-serif;
   list-style-type: none;
 }
+
+.card-image {
+  max-height: 250px;
+  width: 100%;
+}
