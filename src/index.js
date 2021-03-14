@@ -1,13 +1,63 @@
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { takeEvery, put } from 'redux-saga/effects';
+import axios from 'axios';
+import createSagaMiddleware from 'redux-saga';
+import logger from 'redux-logger';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+/* Import App */
+import App from './components/App/App';
+import './index.css';
+
+const getPlants = function* (action) {
+  try {
+    // gets data from server
+    const response = yield axios.get('/api/plant-details');
+
+    console.log('SAGAS - response', response.data);
+
+    yield put({
+      type: 'SET_PLANTS',
+      payload: response.data,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}; // end getFavorite
+
+function* rootSaga() {
+  // listen for this and do function
+  yield takeEvery('GET_PLANTS', getPlants);
+} // end rootSaga
+
+const sagaMiddleware = createSagaMiddleware();
+
+//  reducers
+const plantReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_PLANTS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const store = createStore(
+  combineReducers({
+    plantReducer,
+  }),
+  applyMiddleware(sagaMiddleware, logger)
+);
+
+sagaMiddleware.run(rootSaga);
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
